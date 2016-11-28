@@ -54,7 +54,7 @@ class ValueIterationAgent(ValueEstimationAgent):
             value += probability * (self.mdp.getReward(state, action, nextState) + (self.discount
                                                                                     + self.values[nextState]))
         return value
-        
+
 
     def computeActionFromValues(self, state):
         """
@@ -66,7 +66,14 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
-        #self.getQValue()
+        posActions = self.mdp.getPossibleActions(state)
+
+        test = self.getQValue(state)
+
+        for action in posActions:
+
+
+
         util.raiseNotDefined()
 
     def getPolicy(self, state):
