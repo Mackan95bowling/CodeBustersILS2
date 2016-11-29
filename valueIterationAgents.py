@@ -31,9 +31,23 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
-        mdp.getStates()
-        print
-         #self.getQValue()
+        testing = self.values.copy()
+
+        states = []
+        states = mdp.getStates()
+        print states
+        actions = mdp.getPossibleActions(states)
+        print actions
+
+        for i in range(iterations):
+        #testing = self.values.copy()
+            for action in actions:
+
+                testing = self.getQValue(states[1], action)
+                print testing
+
+
+
 
     def getValue(self, state):
         """
@@ -68,13 +82,20 @@ class ValueIterationAgent(ValueEstimationAgent):
         "*** YOUR CODE HERE ***"
         posActions = self.mdp.getPossibleActions(state)
 
-        test = self.getQValue(state)
+        if len(posActions) == 0:
+            return None
+        value = None
+        result = None
 
         for action in posActions:
+            temp = self.getQValue(state, action)
+            if value is None or temp > value:
+                value = temp
+                result = value
 
+        return result
 
-
-        util.raiseNotDefined()
+        #util.raiseNotDefined()
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
