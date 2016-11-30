@@ -31,20 +31,31 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
-        testing = self.values.copy()
-
+        testing = util.Counter()
+        testis = self.values
         states = []
         states = mdp.getStates()
         print states
-        actions = mdp.getPossibleActions(states)
-        print actions
+       # actions = mdp.getPossibleActions(states)
+        #print actions
 
         for i in range(iterations):
-        #testing = self.values.copy()
-            for action in actions:
+            temp1 = 0
+            #print "values", self.values
+            print i
+            testing = self.values
+            for state in states:
+                if mdp.isTerminal(state):
+                    self.values[state] = 0
+                else:
+                    actions = mdp.getPossibleActions(state)
+                    for action in actions:
+                        temp2 = self.getQValue(state, action)
+                        temp1 = max(temp1, temp2)
 
-                testing = self.getQValue(states[1], action)
-                print testing
+                        print self.values
+
+                    self.values[state] = temp1
 
 
 
@@ -64,9 +75,14 @@ class ValueIterationAgent(ValueEstimationAgent):
         "*** YOUR CODE HERE ***"
         value = 0
         transition = self.mdp.getTransitionStatesAndProbs(state, action)
-        for nextState, probability in transition:
-            value += probability * (self.mdp.getReward(state, action, nextState) + (self.discount
-                                                                                    + self.values[nextState]))
+
+        for nextState in transition:
+            probability = nextState[1]
+            reward = self.mdp.getReward(state, action, nextState)
+            gamma = self.discount
+            valueNext = self.values[nextState[0]]
+            value += probability * (reward + (gamma * valueNext))
+            print "value:", value
         return value
 
 
