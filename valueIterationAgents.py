@@ -40,13 +40,13 @@ class ValueIterationAgent(ValueEstimationAgent):
         #print actions
 
         for i in range(iterations):
-            temp1 = 0
+            temp1 = None
             #print "values", self.values
             print i
             testing = self.values
             for state in states:
                 if mdp.isTerminal(state):
-                    self.values[state] = 0
+                    temp1 = 0
                 else:
                     actions = mdp.getPossibleActions(state)
                     for action in actions:
