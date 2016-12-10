@@ -1,4 +1,5 @@
 import operator
+import random
 import numpy as np
 
 class GA(object):
@@ -68,10 +69,27 @@ class GA(object):
         vars = np.zeros(nVariables)    # Create a one-dimensional Numpy array of variables
 
         # Calculate the value of each variable from the bits in the bit string
-
         ##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
+
+
+        genes = 0
+        length = 0
+        for i in range(vars.size):
+            lower = variableRange[i][0]
+            upper = variableRange[i][1]
+            power = -1
+            value = 0
+
+            for bit in range(nBits):
+                sum = pow(2, power)
+                value += sum * chromosome[bit+genes]
+                power -= 1
+
+        length += 1
+        genes = length * nBits
+        vars[i] = lower + (upper - lower) / (1 - pow(2, -nBits)) * value
 
         return vars
 
@@ -79,11 +97,16 @@ class GA(object):
         selected = 0
 
         # Use Roulette-Wheel Selection to select an individual to the mating pool
-		
 		##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
-
+        for i in range(len(normalizedFitness)):
+            selected += normalizedFitness[i]
+        r = random.random()
+        for x in range(len(normalizedFitness)):
+            sum += (normalizedFitness[i] / selected)
+            if sum >= r:
+                return i 
         return selected
 
     def TournamentSelect(self, fitness, tournamentSelectionParameter, tournamentSize):
@@ -108,7 +131,13 @@ class GA(object):
         ##############################
 
     def Mutate(self, chromosome, mutationProbability):
-        pass
+
+        for i in range(len(chromosome)):
+            if random.random() <= mutationProbability:
+                if chromosome[i] == 1:
+                    chromosome[i] = 0
+                else:
+                    chromosome[i] = 1
 
         # Mutate the individuals "in-place"
 		# NB! Don't forget to apply the mutation probability to each bit
