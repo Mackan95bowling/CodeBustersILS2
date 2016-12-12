@@ -31,31 +31,31 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
-        testing = util.Counter()
+       # testing = util.Counter()
         testis = self.values
         states = []
         states = mdp.getStates()
         print states
-       # actions = mdp.getPossibleActions(states)
-        #print actions
 
         for i in range(iterations):
-            temp1 = None
-            #print "values", self.values
-            print i
-            testing = self.values
+            testing = self.values.copy()
             for state in states:
+                temp1 = None
                 if mdp.isTerminal(state):
                     temp1 = 0
-                else:
-                    actions = mdp.getPossibleActions(state)
-                    for action in actions:
-                        temp2 = self.getQValue(state, action)
-                        temp1 = max(temp1, temp2)
 
-                        print self.values
+                actions = mdp.getPossibleActions(state)
+                for action in actions:
+                    # for all actions set temp1 to highest q-value.
+                    temp2 = self.getQValue(state, action)
+                    temp1 = max(temp1, temp2)
 
-                    self.values[state] = temp1
+                    print self.values
+                testing[state] = temp1
+            # according to the given formula: v+1 is
+            # given by max of the q value formula.
+            self.values = testing
+
 
 
 
@@ -107,9 +107,9 @@ class ValueIterationAgent(ValueEstimationAgent):
             temp = self.getQValue(state, action)
             if value is None or temp > value:
                 value = temp
-                result = value
+                result = action
 
-        return result
+        return action
 
         #util.raiseNotDefined()
 

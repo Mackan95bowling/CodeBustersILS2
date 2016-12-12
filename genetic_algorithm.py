@@ -117,11 +117,29 @@ class GA(object):
         ##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
+        fitnessList = []
 
+        for i in range(tournamentSize):
+            fitnessList.append(random.randint(0, len(fitness)-1))
+
+        while len(fitnessList) > 1:
+            A = fitnessList.pop()
+            B = fitnessList.pop()
+            if fitness[A] > fitness[B]:
+                if random.random() < tournamentSelectionParameter:
+                    fitnessList.append(A)
+                else:
+                    fitnessList.append(B)
+            else:
+                if random.random() < tournamentSelectionParameter:
+                    fitnessList.append(B)
+                else:
+                    fitnessList.append(A)
+
+        selected = fitnessList.pop()
         return selected
 
     def Cross(self, chromosome1, chromosome2, crossoverProbability):
-        pass
 
 		# Cross the two individuals "in-place"
 		# NB! Don't forget to use the crossover probability
@@ -129,6 +147,12 @@ class GA(object):
         ##############################
         ### YOU'RE CODE GOES HERE ####
         ##############################
+        if random.random() <= crossoverProbability:
+            crossOver = random.randint(0, (np.size(chromosome1) - 1))
+
+            temp = chromosome1[:crossOver].copy()
+            chromosome1[:crossOver] = chromosome2[:crossOver].copy()
+            chromosome2[:crossOver] = temp.copy()
 
     def Mutate(self, chromosome, mutationProbability):
 
